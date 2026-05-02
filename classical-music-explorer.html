@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Классика — Музыкальный Атлас</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1410;
+    --parchment: #f5f0e8;
+    --gold: #b8922a;
+    --gold-light: #d4aa4a;
+    --muted: #7a6f60;
+    --cream: #faf7f2;
+    --warm-white: #fffdf9;
+    --border: #d8cfc0;
+    --shadow: rgba(26,20,16,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--ink);
+    padding: 40px 24px 32px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 120%, rgba(184,146,42,0.18) 0%, transparent 70%);
+  }
+  .header-ornament {
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    font-family: 'Tenor Sans', sans-serif;
+    opacity: 0.7;
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-size: clamp(2.2rem, 7vw, 3.8rem);
+    font-weight: 300;
+    color: var(--parchment);
+    letter-spacing: 2px;
+    line-height: 1.1;
+  }
+  header h1 em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+  .header-sub {
+    margin-top: 10px;
+    color: rgba(245,240,232,0.5);
+    font-size: 1rem;
+    font-style: italic;
+    letter-spacing: 1px;
+  }
+  .header-line {
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 20px auto 0;
+    opacity: 0.6;
+  }
+
+  /* LAYOUT */
+  .app {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    min-height: calc(100vh - 160px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: var(--ink);
+    padding: 28px 0;
+    position: sticky;
+    top: 0;
+    height: calc(100vh - 160px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--gold) transparent;
+  }
+  .sidebar-title {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    padding: 0 24px 16px;
+    border-bottom: 1px solid rgba(184,146,42,0.2);
+    margin-bottom: 8px;
+  }
+  .composer-btn {
+    display: block;
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    padding: 14px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    position: relative;
+  }
+  .composer-btn:hover {
+    background: rgba(184,146,42,0.08);
+    border-left-color: rgba(184,146,42,0.4);
+  }
+  .composer-btn.active {
+    background: rgba(184,146,42,0.14);
+    border-left-color: var(--gold);
+  }
+  .composer-btn .c-name {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--parchment);
+    letter-spacing: 0.3px;
+  }
+  .composer-btn.active .c-name { color: var(--gold-light); }
+  .composer-btn .c-years {
+    display: block;
+    font-size: 0.78rem;
+    color: rgba(245,240,232,0.35);
+    font-family: 'Tenor Sans', sans-serif;
+    margin-top: 2px;
+    letter-spacing: 1px;
+  }
+  .era-label {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(184,146,42,0.5);
+    padding: 16px 24px 6px;
+  }
+
+  /* MAIN CONTENT */
+  .main {
+    padding: 0;
+    background: var(--warm-white);
+    overflow-y: auto;
+  }
+
+  /* COMPOSER HERO */
+  .composer-hero {
+    background: linear-gradient(135deg, #2a221a 0%, #1a1410 100%);
+    padding: 48px 52px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .composer-hero::after {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(184,146,42,0.12) 0%, transparent 70%);
+  }
+  .era-badge {
+    display: inline-block;
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(184,146,42,0.4);
+    padding: 4px 12px;
+    margin-bottom: 16px;
+  }
+  .composer-hero h2 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    color: var(--parchment);
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 6px;
+  }
+  .composer-dates {
+    font-size: 1rem;
+    color: rgba(245,240,232,0.45);
+    font-style: italic;
+    margin-bottom: 20px;
+    font-family: 'Tenor Sans', sans-serif;
+    letter-spacing: 1px;
+  }
+  .composer-bio {
+    font-size: 1.05rem;
+    line-height: 1.85;
+    color: rgba(245,240,232,0.72);
+    max-width: 680px;
+    font-weight: 300;
+  }
+  .composer-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 20px;
+  }
+  .tag {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(184,146,42,0.8);
+    background: rgba(184,146,42,0.1);
+    padding: 4px 10px;
+    border-radius: 2px;
+  }
+
+  /* WORKS SECTION */
+  .works-section {
+    padding: 36px 52px 52px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .section-header h3 {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .works-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .work-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    padding: 20px 22px;
+    transition: all 0.25s;
+    position: relative;
+    cursor: pointer;
+  }
+  .work-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 24px var(--shadow);
+    transform: translateY(-2px);
+  }
+  .work-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 0;
+    background: var(--gold);
+    transition: height 0.25s;
+  }
+  .work-card:hover::before { height: 100%; }
+
+  .work-year {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+  .work-title {
+    font-size: 1.08rem;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 6px;
+  }
+  .work-subtitle {
+    font-size: 0.88rem;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+  .work-desc {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #5a5040;
+    margin-bottom: 14px;
+  }
+  .work-meta {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+  }
+  .meta-tag {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--parchment);
+    padding: 3px 8px;
+  }
+  .listen-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+    text-decoration: none;
+    border: 1px solid rgba(184,146,42,0.4);
+    padding: 7px 14px;
+    transition: all 0.2s;
+  }
+  .listen-btn:hover {
+    background: var(--gold);
+    color: var(--ink);
+    border-color: var(--gold);
+  }
+  .listen-btn svg { flex-shrink: 0; }
+
+  /* FACTS SECTION */
+  .facts-section {
+    border-top: 1px solid var(--border);
+    padding: 32px 52px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 24px;
+    background: var(--parchment);
+  }
+  .fact-item {}
+  .fact-label {
+    font-family: 'Tenor Sans', sans-serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .fact-value {
+    font-size: 1.05rem;
+    color: var(--ink);
+    font-weight: 400;
+  }
+
+  /* WELCOME */
+  .welcome {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh;
+    padding: 60px 40px;
+    text-align: center;
+  }
+  .welcome-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    opacity: 0.3;
+  }
+  .welcome h2 {
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--ink);
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .welcome p {
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.7;
+    max-width: 380px;
+  }
+
+  /* MOBILE */
+  @media (max-width: 700px) {
+    .app { grid-template-columns: 1fr; }
+    .sidebar {
+      height: auto;
+      position: static;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      padding: 12px 0;
+    }
+    .sidebar-title, .era-label { display: none; }
+    .composer-btn {
+      padding: 10px 14px;
+      border-left: none;
+      border-bottom: 2px solid transparent;
+      white-space: nowrap;
+    }
+    .composer-btn.active { border-bottom-color: var(--gold); }
+    .composer-hero, .works-section, .facts-section { padding: 28px 20px; }
+    .works-grid { grid-template-columns: 1fr; }
+  }
+
+  .fade-in {
+    animation: fadeIn 0.4s ease both;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-ornament">♩ Музыкальный Атлас ♩</div>
+  <h1>Великие <em>Классики</em></h1>
+  <p class="header-sub">Биографии · Произведения · История создания</p>
+  <div class="header-line"></div>
+</header>
+
+<div class="app">
+  <nav class="sidebar" id="sidebar"></nav>
+  <main class="main" id="main">
+    <div class="welcome">
+      <div class="welcome-icon">𝄞</div>
+      <h2>Выберите композитора</h2>
+      <p>Откройте мир классической музыки — биографии, эпоха, история создания произведений и ссылки на прослушивание.</p>
+    </div>
+  </main>
+</div>
+
+<script>
+const composers = [
+  {
+    id: 'bach',
+    era: 'Барокко',
+    name: 'Иоганн Себастьян Бах',
+    nameShort: 'И.С. Бах',
+    years: '1685 – 1750',
+    birthplace: 'Эйзенах, Германия',
+    nationality: 'Немецкий',
+    style: ['Полифония', 'Контрапункт', 'Органная музыка'],
+    bio: 'Иоганн Себастьян Бах — величайший мастер эпохи барокко, чьё творчество стало вершиной полифонического искусства. Выходец из музыкальной семьи с многовековыми традициями, он работал органистом, кантором и придворным музыкантом в разных городах Германии. Бах создал более тысячи произведений во всех жанрах своего времени, однако при жизни не получил должного признания. Его музыка была «открыта заново» Мендельсоном в XIX веке и с тех пор считается фундаментом западной классики.',
+    works: [
+      { year: '1721', title: 'Бранденбургские концерты', subtitle: 'BWV 1046–1051', genre: 'Оркестровая', desc: 'Шесть концертов для различных составов инструментов, написанных для маркграфа Бранденбургского. Считаются вершиной оркестрового барокко.', yt: 'https://www.youtube.com/results?search_query=Bach+Brandenburg+Concertos' },
+      { year: '1722', title: 'Хорошо темперированный клавир, I', subtitle: 'BWV 846–869', genre: 'Клавирная', desc: '24 прелюдии и фуги во всех тональностях — грандиозный трактат о возможностях равномерной темперации и полифонии.', yt: 'https://www.youtube.com/results?search_query=Bach+Well+Tempered+Clavier+Book+1' },
+      { year: '1723', title: 'Месса си минор', subtitle: 'BWV 232', genre: 'Вокальная', desc: 'Монументальная хоровая месса, которую называют «восьмым чудом света». Бах собирал её на протяжении всей жизни.', yt: 'https://www.youtube.com/results?search_query=Bach+Mass+in+B+minor' },
+      { year: '1727', title: 'Страсти по Матфею', subtitle: 'BWV 244', genre: 'Вокальная', desc: 'Величайшее произведение барокко для двух хоров, двух оркестров и солистов. Повествует о Страстях Христовых.', yt: 'https://www.youtube.com/results?search_query=Bach+St+Matthew+Passion' },
+      { year: '1741', title: 'Гольдберг-вариации', subtitle: 'BWV 988', genre: 'Клавирная', desc: 'Ария с 30 вариациями — одна из вершин клавирной музыки всех времён. По легенде написана для лечения бессонницы.', yt: 'https://www.youtube.com/results?search_query=Bach+Goldberg+Variations' },
+      { year: '1747', title: 'Музыкальное приношение', subtitle: 'BWV 1079', genre: 'Камерная', desc: 'Посвящение Фридриху Великому — сборник канонов и ричеркаров на тему, предложенную самим королём.', yt: 'https://www.youtube.com/results?search_query=Bach+Musical+Offering' },
+    ],
+    facts: { 'Дети': '20 (7 выжили)', 'Должность': 'Кантор Томасшуле', 'Инструмент': 'Орган, клавир', 'Всего произведений': '~1128' }
+  },
+  {
+    id: 'mozart',
+    era: 'Классицизм',
+    name: 'Вольфганг Амадей Моцарт',
+    nameShort: 'Моцарт',
+    years: '1756 – 1791',
+    birthplace: 'Зальцбург, Австрия',
+    nationality: 'Австрийский',
+    style: ['Венский классицизм', 'Опера', 'Симфония'],
+    bio: 'Моцарт — феноменальный вундеркинд, ставший символом музыкального гения. Уже в 5 лет он сочинял менуэты, в 6 — выступал перед императрицей Марией Терезией. За свои 35 лет он создал более 600 произведений: 41 симфонию, 27 фортепианных концертов, 20 опер. Его музыка отличается удивительным сочетанием лёгкости и глубины, света и тени. Умер в нищете, не завершив Реквием, и был похоронен в безымянной могиле.',
+    works: [
+      { year: '1784–86', title: 'Фортепианные концерты № 20–23', subtitle: 'KV 466, 467, 488, 491', genre: 'Концерт', desc: 'Зрелые концерты — вершина жанра. № 21 с его знаменитым Andante прославился благодаря шведскому фильму «Эльвира Мадиган».', yt: 'https://www.youtube.com/results?search_query=Mozart+Piano+Concerto+21' },
+      { year: '1786', title: 'Свадьба Фигаро', subtitle: 'KV 492', genre: 'Опера', desc: 'Опера-буффа по пьесе Бомарше — революционное произведение о правах человека, скрытых за блестящей комедией.', yt: 'https://www.youtube.com/results?search_query=Mozart+Le+nozze+di+Figaro' },
+      { year: '1787', title: 'Дон Жуан', subtitle: 'KV 527', genre: 'Опера', desc: 'Сам Моцарт называл её «dramma giocoso» (весёлая драма). История обольстителя, которого забирает каменный гость.', yt: 'https://www.youtube.com/results?search_query=Mozart+Don+Giovanni' },
+      { year: '1788', title: 'Симфония № 41 «Юпитер»', subtitle: 'KV 551', genre: 'Симфония', desc: 'Последняя симфония Моцарта, завершённая за несколько недель. Финал с пятью темами в контрапункте — чудо полифонии.', yt: 'https://www.youtube.com/results?search_query=Mozart+Symphony+41+Jupiter' },
+      { year: '1791', title: 'Реквием', subtitle: 'KV 626', genre: 'Вокальная', desc: 'Загадочное последнее произведение, заказанное анонимно. Моцарт умер, не завершив его — дописал ученик Зюсмайр.', yt: 'https://www.youtube.com/results?search_query=Mozart+Requiem' },
+      { year: '1791', title: 'Волшебная флейта', subtitle: 'KV 620', genre: 'Опера', desc: 'Зингшпиль (опера с разговорными диалогами) — философская сказка о масонских идеалах, добре и просвещении.', yt: 'https://www.youtube.com/results?search_query=Mozart+Magic+Flute' },
+    ],
+    facts: { 'Первое сочинение': '5 лет', 'Opus': 'KV 626 произведений', 'Опер': '20', 'Симфоний': '41' }
+  },
+  {
+    id: 'beethoven',
+    era: 'Классицизм / Романтизм',
+    name: 'Людвиг ван Бетховен',
+    nameShort: 'Бетховен',
+    years: '1770 – 1827',
+    birthplace: 'Бонн, Германия',
+    nationality: 'Немецкий',
+    style: ['Героика', 'Симфонизм', 'Сонатная форма'],
+    bio: 'Бетховен — гений, изменивший саму природу музыки. Он перешагнул рамки классицизма и проложил путь романтизму. Трагедия его жизни — прогрессирующая глухота, начавшаяся в 26 лет. Несмотря на полную потерю слуха, он создал грандиознейшие шедевры, включая Девятую симфонию, которую не мог физически услышать. Бетховен превратил композитора из придворного слуги в свободного художника, выражающего своё внутреннее «Я».',
+    works: [
+      { year: '1803', title: 'Симфония № 3 «Эроика»', subtitle: 'Op. 55', genre: 'Симфония', desc: 'Революционная симфония, написанная первоначально в честь Наполеона. Бетховен вычеркнул посвящение, узнав о его коронации.', yt: 'https://www.youtube.com/results?search_query=Beethoven+Symphony+3+Eroica' },
+      { year: '1804', title: 'Соната для фортепиано № 23 «Аппассионата»', subtitle: 'Op. 57', genre: 'Фортепианная', desc: 'Самая пылкая соната Бетховена. Брамс говорил, что не осмеливается играть её — такова её сила.', yt: 'https://www.youtube.com/results?search_query=Beethoven+Appassionata+Sonata' },
+      { year: '1805', title: 'Соната для фортепиано № 14 «Лунная»', subtitle: 'Op. 27 № 2', genre: 'Фортепианная', desc: 'Название «Лунная» дал критик Рельштаб уже после смерти Бетховена. Первая часть — один из самых узнаваемых фрагментов в истории.', yt: 'https://www.youtube.com/results?search_query=Beethoven+Moonlight+Sonata' },
+      { year: '1808', title: 'Симфония № 5 до минор', subtitle: 'Op. 67', genre: 'Симфония', desc: 'Четыре ноты вступления — «так судьба стучится в дверь» — стали символом всей классической музыки.', yt: 'https://www.youtube.com/results?search_query=Beethoven+Symphony+5' },
+      { year: '1824', title: 'Симфония № 9 ре минор', subtitle: 'Op. 125', genre: 'Симфония', desc: 'Написана полностью глухим Бетховеном. Четвёртая часть с «Одой к радости» — гимн человечеству и сейчас гимн ЕС.', yt: 'https://www.youtube.com/results?search_query=Beethoven+Symphony+9' },
+      { year: '1826', title: 'Струнный квартет № 14', subtitle: 'Op. 131', genre: 'Камерная', desc: 'Один из поздних квартетов — самые загадочные произведения Бетховена. Шуберт просил сыграть его перед смертью.', yt: 'https://www.youtube.com/results?search_query=Beethoven+String+Quartet+14' },
+    ],
+    facts: { 'Симфоний': '9', 'Сонат для фп.': '32', 'Глухота': 'с ~26 лет', 'Концертов': '5 фортепианных' }
+  },
+  {
+    id: 'chopin',
+    era: 'Романтизм',
+    name: 'Фредерик Шопен',
+    nameShort: 'Шопен',
+    years: '1810 – 1849',
+    birthplace: 'Варшава, Польша',
+    nationality: 'Польский',
+    style: ['Фортепианная миниатюра', 'Ноктюрн', 'Поэзия звука'],
+    bio: 'Шопен — поэт фортепиано, создавший уникальный мир интимной, глубоко личной музыки. Почти всё его творчество написано для фортепиано соло — явление уникальное в истории. Покинув Польшу в 20 лет, он прожил жизнь эмигранта в Париже, тоскуя по родине. Его музыка пронизана польским фольклором, мазурками и полонезами. Умер от туберкулёза в 39 лет, попросив похоронить своё сердце в Варшаве — так и было сделано.',
+    works: [
+      { year: '1830–31', title: 'Концерт для фортепиано № 1', subtitle: 'Op. 11', genre: 'Концерт', desc: 'Написан до эмиграции из Польши. Вторая часть — «Романс» — один из самых лирических эпизодов в истории концертного жанра.', yt: 'https://www.youtube.com/results?search_query=Chopin+Piano+Concerto+1' },
+      { year: '1839', title: 'Баллада № 1 соль минор', subtitle: 'Op. 23', genre: 'Фортепианная', desc: 'Первая из четырёх баллад — монументальная поэма, вдохновлённая балладами Мицкевича. Любимица всех пианистов мира.', yt: 'https://www.youtube.com/results?search_query=Chopin+Ballade+1' },
+      { year: '1839', title: 'Соната № 2 си-бемоль минор', subtitle: 'Op. 35', genre: 'Фортепианная', desc: 'Содержит знаменитый «Похоронный марш» — одну из самых узнаваемых мелодий в мире. Финал — загадочные октавы «как ветер над могилами».', yt: 'https://www.youtube.com/results?search_query=Chopin+Sonata+2+Funeral+March' },
+      { year: '1842', title: 'Ноктюрны', subtitle: 'различные Op.', genre: 'Фортепианная', desc: '21 ноктюрн — само воплощение романтической ночи, меланхолии и мечтательности. Жанр создан Филдом, но Шопен поднял его на недосягаемую высоту.', yt: 'https://www.youtube.com/results?search_query=Chopin+Nocturnes+complete' },
+      { year: '1844', title: 'Соната № 3 си минор', subtitle: 'Op. 58', genre: 'Фортепианная', desc: 'Зрелый шедевр — масштабная соната в четырёх частях, сочетающая страсть и медитативность.', yt: 'https://www.youtube.com/results?search_query=Chopin+Sonata+3+B+minor' },
+      { year: '1845–46', title: 'Полонез-фантазия', subtitle: 'Op. 61', genre: 'Фортепианная', desc: 'Одно из последних крупных произведений — загадочная, свободная форма, где полонез растворяется в фантазии.', yt: 'https://www.youtube.com/results?search_query=Chopin+Polonaise+Fantasie' },
+    ],
+    facts: { 'Страна эмиграции': 'Франция', 'Сердце': 'в Варшаве', 'Инструмент': 'Только фортепиано', 'Мазурок': '58' }
+  },
+  {
+    id: 'tchaikovsky',
+    era: 'Романтизм',
+    name: 'Пётр Ильич Чайковский',
+    nameShort: 'Чайковский',
+    years: '1840 – 1893',
+    birthplace: 'Воткинск, Россия',
+    nationality: 'Русский',
+    style: ['Балетная музыка', 'Русский романтизм', 'Симфонизм'],
+    bio: 'Чайковский — самый известный русский композитор в мире, создавший музыку, покорившую миллионы. Его балеты «Лебединое озеро», «Спящая красавица» и «Щелкунчик» стали синонимами самого жанра. Чайковский совместил западноевропейские традиции с русской душой, создав глубоко эмоциональную музыку, в которой личная трагедия превращается в универсальное человеческое переживание. Умер при загадочных обстоятельствах вскоре после премьеры Шестой симфонии.',
+    works: [
+      { year: '1876', title: 'Лебединое озеро', subtitle: 'Op. 20', genre: 'Балет', desc: 'Первый из трёх великих балетов. Тема Лебедя — одна из самых узнаваемых мелодий в истории музыки.', yt: 'https://www.youtube.com/results?search_query=Tchaikovsky+Swan+Lake' },
+      { year: '1879', title: 'Евгений Онегин', subtitle: 'Op. 24', genre: 'Опера', desc: '«Лирические сцены» по Пушкину — интимная камерная опера, ставшая символом русской оперной школы.', yt: 'https://www.youtube.com/results?search_query=Tchaikovsky+Eugene+Onegin' },
+      { year: '1880', title: 'Серенада для струнного оркестра', subtitle: 'Op. 48', genre: 'Оркестровая', desc: 'Четырёхчастная серенада — одна из самых тёплых и светлых страниц в творчестве Чайковского.', yt: 'https://www.youtube.com/results?search_query=Tchaikovsky+Serenade+for+Strings' },
+      { year: '1885', title: 'Манфред-симфония', subtitle: 'Op. 58', genre: 'Симфония', desc: 'Программная симфония по поэме Байрона — монументальная фреска о гордом одиноком герое.', yt: 'https://www.youtube.com/results?search_query=Tchaikovsky+Manfred+Symphony' },
+      { year: '1888', title: 'Симфония № 5 ми минор', subtitle: 'Op. 64', genre: 'Симфония', desc: 'Сквозная тема судьбы пронизывает все четыре части — от мрака первой к триумфу финала.', yt: 'https://www.youtube.com/results?search_query=Tchaikovsky+Symphony+5' },
+      { year: '1893', title: 'Симфония № 6 «Патетическая»', subtitle: 'Op. 74', genre: 'Симфония', desc: 'Последнее произведение Чайковского — прощание с жизнью. Финал заканчивается угасанием. Чайковский умер через 9 дней после премьеры.', yt: 'https://www.youtube.com/results?search_query=Tchaikovsky+Symphony+6+Pathetique' },
+    ],
+    facts: { 'Балетов': '3 (все шедевры)', 'Симфоний': '6', 'Опер': '10', 'Консерватория': 'Московская' }
+  },
+  {
+    id: 'brahms',
+    era: 'Романтизм',
+    name: 'Иоганн Брамс',
+    nameShort: 'Брамс',
+    years: '1833 – 1897',
+    birthplace: 'Гамбург, Германия',
+    nationality: 'Немецкий',
+    style: ['Абсолютная музыка', 'Классическая строгость', 'Романтическая глубина'],
+    bio: 'Брамс — наследник Баха и Бетховена, соединивший строгость классической формы с романтической эмоциональностью. Его называли «консерватором» в споре с «прогрессистами» Вагнером и Листом, но именно эта верность традиции создала шедевры непреходящей ценности. Педантичный перфекционист, он уничтожил большую часть своих ранних сочинений. Первую симфонию закончил в 43 года после 20 лет работы.',
+    works: [
+      { year: '1868', title: 'Немецкий реквием', subtitle: 'Op. 45', genre: 'Вокальная', desc: 'Реквием не на латинском, а на немецком — текст составлен самим Брамсом из Библии. Утешение живым, а не месса за мёртвых.', yt: 'https://www.youtube.com/results?search_query=Brahms+German+Requiem' },
+      { year: '1876', title: 'Симфония № 1 до минор', subtitle: 'Op. 68', genre: 'Симфония', desc: 'Двадцать лет работы. Ганс фон Бюлов назвал её «Десятой симфонией Бетховена» — высшая похвала того времени.', yt: 'https://www.youtube.com/results?search_query=Brahms+Symphony+1' },
+      { year: '1877', title: 'Симфония № 2 ре мажор', subtitle: 'Op. 73', genre: 'Симфония', desc: 'Написана за одно лето — полная противоположность Первой. Светлая, пасторальная, «Пасторальная симфония Брамса».', yt: 'https://www.youtube.com/results?search_query=Brahms+Symphony+2' },
+      { year: '1881', title: 'Концерт для фортепиано № 2', subtitle: 'Op. 83', genre: 'Концерт', desc: 'Самый масштабный фортепианный концерт XIX века — четыре части вместо трёх, симфонический размах.', yt: 'https://www.youtube.com/results?search_query=Brahms+Piano+Concerto+2' },
+      { year: '1885', title: 'Симфония № 4 ми минор', subtitle: 'Op. 98', genre: 'Симфония', desc: 'Последняя симфония завершается пассакальей — вариациями на бас-голос. Архаизм и романтизм в одном целом.', yt: 'https://www.youtube.com/results?search_query=Brahms+Symphony+4' },
+      { year: '1887', title: 'Двойной концерт ля минор', subtitle: 'Op. 102', genre: 'Концерт', desc: 'Концерт для скрипки и виолончели с оркестром — последнее крупное оркестровое произведение Брамса.', yt: 'https://www.youtube.com/results?search_query=Brahms+Double+Concerto' },
+    ],
+    facts: { 'Симфоний': '4', 'Лет на 1-ю симфонию': '~20', 'Венгерских танцев': '21', 'Квинтетов': '3' }
+  },
+  {
+    id: 'schubert',
+    era: 'Романтизм',
+    name: 'Франц Шуберт',
+    nameShort: 'Шуберт',
+    years: '1797 – 1828',
+    birthplace: 'Вена, Австрия',
+    nationality: 'Австрийский',
+    style: ['Песня (Lied)', 'Мелодия', 'Лирика'],
+    bio: 'Шуберт прожил всего 31 год, но успел написать более 1500 произведений, включая 600 песен — целый мир в звуках. Он создал и поднял на недосягаемую высоту жанр немецкой Lied (художественной песни). При жизни оставался почти неизвестным, зарабатывая копейки уроками. Его поздние произведения — квинтет, последние сонаты, «Зимний путь» — пронизаны предчувствием близкой смерти и принадлежат к вершинам мировой культуры.',
+    works: [
+      { year: '1814–15', title: 'Маргарита за прялкой / Лесной царь', subtitle: 'Op. 1, 2', genre: 'Вокальная', desc: 'Первые великие песни — «Гретхен» и «Эрлкёниг» по Гёте, написанные в 17–18 лет. Мгновенный гений.', yt: 'https://www.youtube.com/results?search_query=Schubert+Erlkonig' },
+      { year: '1822', title: 'Симфония № 8 «Неоконченная»', subtitle: 'D 759', genre: 'Симфония', desc: 'Почему Шуберт остановился на двух частях — загадка. Но именно эта незаконченность создала шедевр.', yt: 'https://www.youtube.com/results?search_query=Schubert+Unfinished+Symphony' },
+      { year: '1823', title: 'Прекрасная мельничиха', subtitle: 'D 795', genre: 'Вокальная', desc: 'Первый вокальный цикл из 20 песен на стихи Мюллера — история любви, ревности и отчаяния мельника.', yt: 'https://www.youtube.com/results?search_query=Schubert+Die+schone+Mullerin' },
+      { year: '1827', title: 'Зимний путь', subtitle: 'D 911', genre: 'Вокальная', desc: '24 песни о странствии одинокого отверженного — мрачнейшее и величайшее из всех вокальных циклов.', yt: 'https://www.youtube.com/results?search_query=Schubert+Winterreise' },
+      { year: '1828', title: 'Квинтет до мажор', subtitle: 'D 956', genre: 'Камерная', desc: 'Написан за два месяца до смерти. Медленная часть — одна из самых сокровенных страниц в истории музыки.', yt: 'https://www.youtube.com/results?search_query=Schubert+String+Quintet' },
+      { year: '1828', title: 'Соната № 21 си-бемоль мажор', subtitle: 'D 960', genre: 'Фортепианная', desc: 'Последняя соната — огромная и неспешная, как прощание. Первая часть длится 20 минут — время остановилось.', yt: 'https://www.youtube.com/results?search_query=Schubert+Sonata+D960' },
+    ],
+    facts: { 'Песен': '~600', 'Симфоний': '9', 'Лет жизни': '31', 'Сонат для фп.': '21' }
+  },
+  {
+    id: 'debussy',
+    era: 'Импрессионизм',
+    name: 'Клод Дебюсси',
+    nameShort: 'Дебюсси',
+    years: '1862 – 1918',
+    birthplace: 'Сен-Жермен-ан-Ле, Франция',
+    nationality: 'Французский',
+    style: ['Импрессионизм', 'Цветовая гармония', 'Атмосфера'],
+    bio: 'Дебюсси — создатель музыкального импрессионизма, революционер, разрушивший устои традиционной гармонии. Его музыка рисует образы, свет, воду, туман — как полотна Моне. Сам он не любил слово «импрессионизм», но именно он создал эту звуковую эстетику. Влияние яванской гамелан-музыки, услышанной на Всемирной выставке 1889 года, перевернуло его звуковой мир. Дебюсси открыл дверь в современную музыку XX века.',
+    works: [
+      { year: '1894', title: 'Прелюдия к послеполудню фавна', subtitle: 'L 86', genre: 'Оркестровая', desc: 'Переломный момент в истории музыки. Флейта в начале — самые знаменитые четыре такта XX века. Нижинский поставил по ней балет.', yt: 'https://www.youtube.com/results?search_query=Debussy+Prelude+afternoon+faun' },
+      { year: '1905', title: 'La Mer («Море»)', subtitle: 'L 109', genre: 'Оркестровая', desc: 'Три симфонических наброска, рисующих море — не картину, а само ощущение стихии. Оркестровый шедевр импрессионизма.', yt: 'https://www.youtube.com/results?search_query=Debussy+La+Mer' },
+      { year: '1905', title: 'Образы для оркестра', subtitle: 'L 122', genre: 'Оркестровая', desc: 'Три пьесы, включая «Иберию» и «Жиги». Дебюсси изображает разные страны через их звуковую атмосферу.', yt: 'https://www.youtube.com/results?search_query=Debussy+Images+orchestra' },
+      { year: '1910', title: 'Прелюдии для фортепиано, книга I', subtitle: 'L 117', genre: 'Фортепианная', desc: '12 прелюдий с поэтическими названиями — «Девушка с волосами льна», «Соборы под водой», «Шаги на снегу».', yt: 'https://www.youtube.com/results?search_query=Debussy+Preludes+Book+1' },
+      { year: '1913', title: 'Прелюдии для фортепиано, книга II', subtitle: 'L 123', genre: 'Фортепианная', desc: 'Вторая книга — ещё более загадочная и экспериментальная. Включает «Фейерверк» и «Ундину».', yt: 'https://www.youtube.com/results?search_query=Debussy+Preludes+Book+2' },
+      { year: '1918', title: 'Соната для скрипки и фортепиано', subtitle: 'L 148', genre: 'Камерная', desc: 'Последнее произведение умирающего Дебюсси. Краткая, хрупкая, как прощальное слово.', yt: 'https://www.youtube.com/results?search_query=Debussy+Violin+Sonata' },
+    ],
+    facts: { 'Направление': 'Импрессионизм', 'Любимый инструмент': 'Фортепиано', 'Оперу написал': '1 («Пеллеас»)', 'Источник вдохновения': 'Живопись, поэзия' }
+  },
+];
+
+const eras = ['Барокко', 'Классицизм', 'Классицизм / Романтизм', 'Романтизм', 'Импрессионизм'];
+
+function buildSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const grouped = {};
+  composers.forEach(c => {
+    if (!grouped[c.era]) grouped[c.era] = [];
+    grouped[c.era].push(c);
+  });
+
+  let html = '<div class="sidebar-title">Композиторы</div>';
+  const seenEras = [];
+  composers.forEach(c => {
+    if (!seenEras.includes(c.era)) {
+      seenEras.push(c.era);
+      html += `<div class="era-label">${c.era}</div>`;
+    }
+    html += `<button class="composer-btn" onclick="showComposer('${c.id}')" id="btn-${c.id}">
+      <span class="c-name">${c.nameShort}</span>
+      <span class="c-years">${c.years}</span>
+    </button>`;
+  });
+  sidebar.innerHTML = html;
+}
+
+function showComposer(id) {
+  const c = composers.find(x => x.id === id);
+  if (!c) return;
+
+  document.querySelectorAll('.composer-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('btn-' + id).classList.add('active');
+
+  const factsHtml = Object.entries(c.facts).map(([k, v]) => `
+    <div class="fact-item">
+      <div class="fact-label">${k}</div>
+      <div class="fact-value">${v}</div>
+    </div>
+  `).join('');
+
+  const worksHtml = c.works.map(w => `
+    <div class="work-card">
+      <div class="work-year">${w.year}</div>
+      <div class="work-title">${w.title}</div>
+      <div class="work-subtitle">${w.subtitle} · ${w.genre}</div>
+      <div class="work-desc">${w.desc}</div>
+      <a class="listen-btn" href="${w.yt}" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        Слушать на YouTube
+      </a>
+    </div>
+  `).join('');
+
+  const tagsHtml = c.style.map(s => `<span class="tag">${s}</span>`).join('');
+
+  document.getElementById('main').innerHTML = `
+    <div class="fade-in">
+      <div class="composer-hero">
+        <div class="era-badge">${c.era}</div>
+        <h2>${c.name}</h2>
+        <div class="composer-dates">${c.years} · ${c.birthplace}</div>
+        <p class="composer-bio">${c.bio}</p>
+        <div class="composer-tags">${tagsHtml}</div>
+      </div>
+
+      <div class="facts-section">${factsHtml}</div>
+
+      <div class="works-section">
+        <div class="section-header"><h3>Ключевые произведения</h3></div>
+        <div class="works-grid">${worksHtml}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('main').scrollTop = 0;
+}
+
+buildSidebar();
+</script>
+</body>
+</html>
